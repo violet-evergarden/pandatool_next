@@ -29,7 +29,7 @@ export function LocaleSwitcher() {
 
   return (
     <Select value={locale} onValueChange={switchLocale}>
-      <SelectTrigger className="w-[120px] h-8">
+      <SelectTrigger className="w-30 h-8">
         <Globe className="h-4 w-4 mr-1" />
         <SelectValue placeholder="Language">
           {currentLocale?.flag} {currentLocale?.label}

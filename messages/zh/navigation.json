@@ -1,0 +1,54 @@
+{
+  "sidebar": {
+    "dashboard": "仪表板",
+    "projects": "项目",
+    "analytics": "数据分析",
+    "settings": "设置",
+    "reports": "报告",
+    "team": "团队",
+    "billing": "账单",
+    "help": "帮助"
+  },
+  "header": {
+    "search": "搜索...",
+    "notifications": "通知",
+    "profile": "个人资料",
+    "language": "语言"
+  },
+  "projects": {
+    "activeProjects": "活跃项目",
+    "archived": "已归档",
+    "addProject": "添加项目",
+    "moreProjects": "更多项目"
+  },
+  "teams": {
+    "switchTeam": "切换团队",
+    "addTeam": "添加团队",
+    "selectTeam": "选择团队",
+    "acmeInc": "阿克米公司",
+    "monstersInc": "怪兽公司",
+    "starkIndustries": "斯塔克工业",
+    "enterprise": "企业版",
+    "startup": "创业版",
+    "pro": "专业版"
+  },
+  "menu": {
+    "platform": "平台",
+    "dashboard": "仪表板",
+    "projects": "项目",
+    "analytics": "数据分析",
+    "settings": "设置",
+    "activeProjects": "活跃项目",
+    "archived": "已归档",
+    "overview": "概览",
+    "reports": "报告",
+    "realtime": "实时数据",
+    "general": "常规设置",
+    "team": "团队管理",
+    "billing": "账单",
+    "addProject": "添加项目",
+    "ecommercePlatform": "电商平台",
+    "mobileApp": "移动应用",
+    "marketingSite": "营销网站"
+  }
+}

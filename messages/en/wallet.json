@@ -1,0 +1,13 @@
+{
+  "connect": "Connect Wallet",
+  "disconnect": "Disconnect",
+  "connected": "Connected",
+  "notConnected": "Not Connected",
+  "connecting": "Connecting...",
+  "address": "Address",
+  "balance": "Balance",
+  "copyAddress": "Copy Address",
+  "viewOnExplorer": "View on Explorer",
+  "options": "Wallet Options",
+  "selectConnector": "Select Wallet"
+}

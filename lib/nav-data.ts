@@ -1,7 +1,17 @@
-import { type LucideIcon } from "lucide-react"
+import {
+  type LucideIcon,
+  LayoutDashboard,
+  FolderKanban,
+  BarChart3,
+  Settings,
+  Frame,
+  Map,
+  PieChart,
+  Briefcase,
+} from "lucide-react"
 
 export interface Link {
-  title: string
+  titleKey: string  // 翻译键
   url?: string
   icon?: LucideIcon
   isActive?: boolean
@@ -9,7 +19,7 @@ export interface Link {
 }
 
 export interface NavItem extends Link {
-  title: string
+  titleKey: string
   url: string
   icon?: LucideIcon
   isActive?: boolean
@@ -17,7 +27,7 @@ export interface NavItem extends Link {
 }
 
 export interface NavMain {
-  title: string
+  titleKey: string
   url: string
   icon?: LucideIcon
   isActive?: boolean
@@ -25,15 +35,15 @@ export interface NavMain {
 }
 
 export interface NavProject {
-  name: string
+  nameKey: string
   url: string
   icon?: LucideIcon
 }
 
 export interface Team {
-  name: string
-  logo: LucideIcon | string
-  plan: string
+  nameKey: string
+  logo: LucideIcon
+  planKey: string
 }
 
 export interface User {
@@ -43,7 +53,7 @@ export interface User {
 }
 
 export interface NavLink {
-  title: string
+  titleKey: string
   href: string
 }
 
@@ -62,73 +72,77 @@ export const navData: NavData = {
   },
   teams: [
     {
-      name: "Acme Inc",
-      logo: "Acme",
-      plan: "Enterprise",
+      nameKey: "acmeInc",
+      logo: Frame,
+      planKey: "enterprise",
     },
     {
-      name: "Monsters Inc",
-      logo: "Monsters",
-      plan: "Startup",
+      nameKey: "monstersInc",
+      logo: Briefcase,
+      planKey: "startup",
     },
     {
-      name: "Stark Industries",
-      logo: "Stark",
-      plan: "Pro",
+      nameKey: "starkIndustries",
+      logo: Map,
+      planKey: "pro",
     },
   ],
   navMain: [
     {
-      title: "Dashboard",
+      titleKey: "dashboard",
       url: "/dashboard",
+      icon: LayoutDashboard,
       isActive: true,
     },
     {
-      title: "Projects",
+      titleKey: "projects",
       url: "/projects",
+      icon: FolderKanban,
       items: [
         {
-          title: "Active Projects",
+          titleKey: "activeProjects",
           url: "/projects/active",
         },
         {
-          title: "Archived",
+          titleKey: "archived",
           url: "/projects/archived",
         },
       ],
     },
     {
-      title: "Analytics",
+      titleKey: "analytics",
       url: "/analytics",
+      icon: BarChart3,
       items: [
         {
-          title: "Overview",
+          titleKey: "overview",
           url: "/analytics/overview",
         },
         {
-          title: "Reports",
+          titleKey: "reports",
           url: "/analytics/reports",
         },
         {
-          title: "Real-time",
+          titleKey: "realtime",
           url: "/analytics/realtime",
         },
       ],
     },
     {
-      title: "Settings",
+      titleKey: "settings",
       url: "/settings",
+      icon: Settings,
       items: [
         {
-          title: "General",
+          titleKey: "general",
           url: "/settings/general",
         },
         {
-          title: "Team",
+          titleKey: "team",
           url: "/settings/team",
         },
         {
-          title: "Billing",
+          titleKey: "billing",
           url: "/settings/billing",
         },
       ],
@@ -136,16 +150,19 @@ export const navData: NavData = {
   ],
   projects: [
     {
-      name: "E-commerce Platform",
+      nameKey: "ecommercePlatform",
       url: "/projects/ecommerce",
+      icon: PieChart,
     },
     {
-      name: "Mobile App",
+      nameKey: "mobileApp",
       url: "/projects/mobile",
+      icon: FolderKanban,
     },
     {
-      name: "Marketing Site",
+      nameKey: "marketingSite",
       url: "/projects/marketing",
+      icon: Map,
     },
   ],
 }

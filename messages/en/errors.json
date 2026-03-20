@@ -1,0 +1,7 @@
+{
+  "notFound": "Page not found",
+  "serverError": "Server error",
+  "networkError": "Network error",
+  "tryAgain": "Try again",
+  "goHome": "Go to home"
+}

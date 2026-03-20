@@ -1,7 +1,7 @@
 "use client"
 
-import { type LucideIcon, PlusIcon } from "lucide-react"
-
+import { type LucideIcon, Plus } from "lucide-react"
+import { useTranslations } from 'next-intl'
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/sidebar"
 
 export interface NavProject {
-  name: string
+  nameKey: string
   url: string
   icon?: LucideIcon
 }
@@ -21,24 +21,26 @@ export function NavProjects({
 }: {
   projects: NavProject[]
 }) {
+  const t = useTranslations('navigation.menu')
+
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Projects</SidebarGroupLabel>
+      <SidebarGroupLabel>{t('projects')}</SidebarGroupLabel>
       <SidebarMenu>
         {projects.map((project) => (
-          <SidebarMenuItem key={project.name}>
-            <SidebarMenuButton asChild>
+          <SidebarMenuItem key={project.nameKey}>
+            <SidebarMenuButton asChild tooltip={t(project.nameKey)}>
               <a href={project.url}>
                 {project.icon && <project.icon />}
-                <span>{project.name}</span>
+                <span>{t(project.nameKey)}</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}
         <SidebarMenuItem>
-          <SidebarMenuButton>
-            <PlusIcon />
-            <span>More Projects</span>
+          <SidebarMenuButton tooltip={t('addProject')}>
+            <Plus />
+            <span>{t('addProject')}</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>

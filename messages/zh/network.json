@@ -1,0 +1,17 @@
+{
+  "switchNetwork": "切换网络",
+  "currentNetwork": "当前网络",
+  "selectNetwork": "选择网络",
+  "chains": {
+    "ethereum": "以太坊",
+    "polygon": "Polygon",
+    "arbitrum": "Arbitrum",
+    "optimism": "Optimism",
+    "base": "Base"
+  },
+  "status": {
+    "connected": "已连接到 {chain}",
+    "switching": "正在切换到 {chain}...",
+    "error": "切换网络失败"
+  }
+}

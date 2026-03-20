@@ -5,7 +5,7 @@ import {
   ChevronsUpDownIcon,
   PlusIcon,
 } from "lucide-react"
-
+import { useTranslations } from 'next-intl'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,11 +20,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { type LucideIcon } from "lucide-react"
 
 export interface Team {
-  name: string
-  logo: React.ComponentType<{ className?: string }> | string
-  plan: string
+  nameKey: string
+  logo: LucideIcon
+  planKey: string
 }
 
 export function TeamSwitcher({
@@ -35,6 +36,7 @@ export function TeamSwitcher({
   defaultTeam: Team
 }) {
   const [activeTeam, setActiveTeam] = React.useState<Team>(defaultTeam)
+  const t = useTranslations('navigation.teams')
 
   return (
     <SidebarMenu>
@@ -43,18 +45,15 @@ export function TeamSwitcher({
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
+              tooltip={t(activeTeam.nameKey)}
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                {typeof activeTeam.logo === "string" ? (
-                  <span className="text-xs font-semibold">{activeTeam.logo}</span>
-                ) : (
-                  <activeTeam.logo className="size-4" />
-                )}
+                <activeTeam.logo className="size-4" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{activeTeam.name}</span>
-                <span className="truncate text-xs">{activeTeam.plan}</span>
+                <span className="truncate font-semibold">{t(activeTeam.nameKey)}</span>
+                <span className="truncate text-xs">{t(activeTeam.planKey)}</span>
               </div>
               <ChevronsUpDownIcon className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -66,22 +65,18 @@ export function TeamSwitcher({
             sideOffset={4}
           >
             <DropdownMenuLabel className="text-xs text-muted-foreground">
-              Teams
+              {t('selectTeam')}
             </DropdownMenuLabel>
             {teams.map((team, index) => (
               <DropdownMenuItem
-                key={`${team.name}-${index}`}
+                key={`${team.nameKey}-${index}`}
                 onClick={() => setActiveTeam(team)}
                 className="gap-2 p-2"
               >
                 <div className="flex size-6 items-center justify-center rounded-sm border">
-                  {typeof team.logo === "string" ? (
-                    <span className="text-xs font-bold">{team.logo}</span>
-                  ) : (
-                    <team.logo className="size-3 shrink-0" />
-                  )}
+                  <team.logo className="size-3 shrink-0" />
                 </div>
-                {team.name}
+                {t(team.nameKey)}
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
               </DropdownMenuItem>
             ))}
@@ -90,7 +85,7 @@ export function TeamSwitcher({
               <div className="flex size-6 items-center justify-center rounded-md border bg-dashed">
                 <PlusIcon className="size-3" />
               </div>
-              <div className="font-medium text-muted-foreground">Add team</div>
+              <div className="font-medium text-muted-foreground">{t('addTeam')}</div>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

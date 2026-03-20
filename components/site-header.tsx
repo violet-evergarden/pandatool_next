@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { useAccount, useConnect, useDisconnect, useSwitchChain } from 'wagmi'
+import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -18,26 +18,22 @@ import { Separator } from '@/components/ui/separator'
 function NetworkSwitcher() {
   const { chain } = useAccount()
   const { switchChain, chains, isPending } = useSwitchChain()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  const t = useTranslations('network')
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="sm" disabled={isPending}>
-          {mounted && chain ? chain.name : '选择网络'}
+          {chain?.name ?? t('selectNetwork')}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>切换网络</DropdownMenuLabel>
+        <DropdownMenuLabel>{t('switchNetwork')}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {chains.map((c) => (
+        {chains?.map((c) => (
           <DropdownMenuItem
             key={c.id}
-            onClick={() => switchChain({ chainId: c.id })}
+            onClick={() => switchChain?.({ chainId: c.id })}
             disabled={c.id === chain?.id}
           >
             {c.name}
@@ -52,27 +48,23 @@ function WalletButton() {
   const { address, isConnected } = useAccount()
   const { connect, connectors, isPending: connectPending } = useConnect()
   const { disconnect } = useDisconnect()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  const t = useTranslations('wallet')
 
   // 截断地址显示
   const truncatedAddress = address
     ? `${address.slice(0, 6)}...${address.slice(-4)}`
     : ''
 
-  if (!mounted || !isConnected) {
+  if (!isConnected) {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button size="sm" disabled={connectPending}>
-            {connectPending ? '连接中...' : '连接钱包'}
+            {connectPending ? t('connecting') : t('connect')}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>选择连接方式</DropdownMenuLabel>
+          <DropdownMenuLabel>{t('selectConnector')}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {connectors.map((connector) => (
             <DropdownMenuItem
@@ -96,10 +88,10 @@ function WalletButton() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>钱包选项</DropdownMenuLabel>
+        <DropdownMenuLabel>{t('options')}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => disconnect()}>
-          断开连接
+          {t('disconnect')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -1,0 +1,54 @@
+{
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "projects": "Projects",
+    "analytics": "Analytics",
+    "settings": "Settings",
+    "reports": "Reports",
+    "team": "Team",
+    "billing": "Billing",
+    "help": "Help"
+  },
+  "header": {
+    "search": "Search...",
+    "notifications": "Notifications",
+    "profile": "Profile",
+    "language": "Language"
+  },
+  "projects": {
+    "activeProjects": "Active Projects",
+    "archived": "Archived",
+    "addProject": "Add Project",
+    "moreProjects": "More Projects"
+  },
+  "teams": {
+    "switchTeam": "Switch Team",
+    "addTeam": "Add Team",
+    "selectTeam": "Select Team",
+    "acmeInc": "Acme Inc",
+    "monstersInc": "Monsters Inc",
+    "starkIndustries": "Stark Industries",
+    "enterprise": "Enterprise",
+    "startup": "Startup",
+    "pro": "Pro"
+  },
+  "menu": {
+    "platform": "Platform",
+    "dashboard": "Dashboard",
+    "projects": "Projects",
+    "analytics": "Analytics",
+    "settings": "Settings",
+    "activeProjects": "Active Projects",
+    "archived": "Archived",
+    "overview": "Overview",
+    "reports": "Reports",
+    "realtime": "Real-time",
+    "general": "General",
+    "team": "Team",
+    "billing": "Billing",
+    "addProject": "Add Project",
+    "ecommercePlatform": "E-commerce Platform",
+    "mobileApp": "Mobile App",
+    "marketingSite": "Marketing Site"
+  }
+}

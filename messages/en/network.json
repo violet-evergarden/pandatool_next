@@ -1,0 +1,17 @@
+{
+  "switchNetwork": "Switch Network",
+  "currentNetwork": "Current Network",
+  "selectNetwork": "Select Network",
+  "chains": {
+    "ethereum": "Ethereum",
+    "polygon": "Polygon",
+    "arbitrum": "Arbitrum",
+    "optimism": "Optimism",
+    "base": "Base"
+  },
+  "status": {
+    "connected": "Connected to {chain}",
+    "switching": "Switching to {chain}...",
+    "error": "Failed to switch network"
+  }
+}

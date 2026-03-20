@@ -1,0 +1,10 @@
+{
+  "account": "账户",
+  "profile": "个人资料",
+  "preferences": "偏好设置",
+  "notifications": "通知设置",
+  "billing": "账单",
+  "security": "安全",
+  "logout": "退出登录",
+  "login": "登录"
+}

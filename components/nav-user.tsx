@@ -1,8 +1,7 @@
 "use client"
 
-import { ChevronUpIcon } from "lucide-react"
-import { LogOutIcon, CreditCardIcon, BellIcon, UserIcon } from "lucide-react"
-
+import { ChevronUpIcon, LogOutIcon, CreditCardIcon, BellIcon, UserIcon } from "lucide-react"
+import { useTranslations } from 'next-intl'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,6 +29,7 @@ export function NavUser({
   user: NavUser
 }) {
   const { isMobile } = useSidebar()
+  const t = useTranslations('user')
 
   return (
     <SidebarMenu>
@@ -70,20 +70,20 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <UserIcon className="mr-2 size-4" />
-              Account
+              {t('account')}
             </DropdownMenuItem>
             <DropdownMenuItem>
               <BellIcon className="mr-2 size-4" />
-              Notifications
+              {t('notifications')}
             </DropdownMenuItem>
             <DropdownMenuItem>
               <CreditCardIcon className="mr-2 size-4" />
-              Billing
+              {t('billing')}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <LogOutIcon className="mr-2 size-4" />
-              Log out
+              {t('logout')}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

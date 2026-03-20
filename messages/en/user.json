@@ -1,0 +1,10 @@
+{
+  "account": "Account",
+  "profile": "Profile",
+  "preferences": "Preferences",
+  "notifications": "Notifications",
+  "billing": "Billing",
+  "security": "Security",
+  "logout": "Log out",
+  "login": "Log in"
+}

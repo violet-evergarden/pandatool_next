@@ -1,0 +1,24 @@
+{
+  "actions": {
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "create": "创建",
+    "confirm": "确认",
+    "back": "返回",
+    "loading": "加载中...",
+    "search": "搜索"
+  },
+  "status": {
+    "success": "成功",
+    "error": "错误",
+    "warning": "警告",
+    "info": "信息"
+  },
+  "nav": {
+    "home": "首页",
+    "settings": "设置",
+    "logout": "退出登录"
+  }
+}

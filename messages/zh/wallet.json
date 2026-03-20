@@ -1,0 +1,13 @@
+{
+  "connect": "连接钱包",
+  "disconnect": "断开连接",
+  "connected": "已连接",
+  "notConnected": "未连接",
+  "connecting": "连接中...",
+  "address": "地址",
+  "balance": "余额",
+  "copyAddress": "复制地址",
+  "viewOnExplorer": "在浏览器中查看",
+  "options": "钱包选项",
+  "selectConnector": "选择钱包"
+}

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { formatEther } from 'ethers'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -24,6 +24,23 @@ import { useAccount } from 'wagmi'
 function AccountInfo() {
   const { isConnected, address, chain } = useAccount()
   const { signer, provider } = useEthersAdapter()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // 服务端渲染时显示加载状态，避免水合错误
+  if (!mounted) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>账户信息</CardTitle>
+          <CardDescription>加载中...</CardDescription>
+        </CardHeader>
+      </Card>
+    )
+  }
 
   if (!isConnected) {
     return (

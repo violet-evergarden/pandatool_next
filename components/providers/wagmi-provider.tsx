@@ -2,7 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider } from 'wagmi'
-import { config } from '@/lib/wagmi-config'
+import { wagmiConfig } from '@/lib/wagmi-config'
 import { ReactNode, useState } from 'react'
 
 export function WagmiProviders({ children }: { children: ReactNode }) {
@@ -19,7 +19,7 @@ export function WagmiProviders({ children }: { children: ReactNode }) {
   )
 
   return (
-    <WagmiProvider config={config}>
+    <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
         {children}
       </QueryClientProvider>

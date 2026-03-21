@@ -1,10 +1,10 @@
 import { http, createConfig } from 'wagmi'
 import { mainnet, bsc, arbitrum, base, polygon } from 'wagmi/chains'
 import { injected, walletConnect } from '@wagmi/connectors'
-import type { Chain } from 'wagmi/chains'
+import { defineChain } from 'viem'
 
-// Define custom chains
-const coreChain: Chain = {
+// Define custom chains using viem's defineChain
+const coreChain = defineChain({
   id: 1116,
   name: 'Core Mainnet',
   nativeCurrency: { name: 'CORE', symbol: 'CORE', decimals: 18 },
@@ -12,12 +12,11 @@ const coreChain: Chain = {
     default: { http: ['https://rpc.coredao.org'] },
   },
   blockExplorers: {
-    default: { name: 'CoreScan', url: 'https://scan.coredao.org' },
+    default: { name: 'CoreScan', url: 'https://scan.coredao.org' }
   },
-  testnet: false,
-}
+})
 
-const xLayerChain: Chain = {
+const xLayer = defineChain({
   id: 196,
   name: 'X Layer',
   nativeCurrency: { name: 'OKB', symbol: 'OKB', decimals: 18 },
@@ -25,12 +24,10 @@ const xLayerChain: Chain = {
     default: { http: ['https://rpc.ankr.com/xlayer'] },
   },
   blockExplorers: {
-    default: { name: 'OKLink', url: 'https://www.oklink.com/zh-hans/x-layer' },
+    default: { name: 'OKLink', url: 'https://www.oklink.com/x-layer' }
   },
-  testnet: false,
-}
-
-const seiChain: Chain = {
+})
+const sei = defineChain({
   id: 1329,
   name: 'Sei Network',
   nativeCurrency: { name: 'SEI', symbol: 'SEI', decimals: 18 },
@@ -38,24 +35,20 @@ const seiChain: Chain = {
     default: { http: ['https://evm-rpc.sei-apis.com'] },
   },
   blockExplorers: {
-    default: { name: 'SeiStream', url: 'https://seistream.app' },
+    default: { name: 'SeiScan', url: 'https://seistream.app' }
   },
-  testnet: false,
-}
-
-const bscTestnetChain: Chain = {
+})
+const bscTestnet = defineChain({
   id: 97,
   name: 'BSC Testnet',
   nativeCurrency: { name: 'TBNB', symbol: 'TBNB', decimals: 18 },
   rpcUrls: {
-    default: { http: ['https://data-seed-prebsc-2-s1.binance.org:8545'] },
+    default: { http: ['https://data-seed-prebsc-2-s1.binance.org:8545'] }
   },
   blockExplorers: {
-    default: { name: 'BSCScan', url: 'https://testnet.bscscan.com' },
+    default: { name: 'BSCScan', url: 'https://testnet.bscscan.com' }
   },
-  testnet: true,
-}
-
+})
 // All chains
 const chains = [
   mainnet,
@@ -64,28 +57,21 @@ const chains = [
   base,
   polygon,
   coreChain,
-  xLayerChain,
-  seiChain,
-  bscTestnetChain,
+  xLayer,
+  sei,
+  bscTestnet,
 ] as const
 
-// Configure transports for each chain
-const transports: Record<number, ReturnType<typeof http()>> = Object.from {
-  [mainnet.id]: http(),
-  [bsc.id]: http(),
-  [arbitrum.id]: http(),
-  [base.id]: http(),
-  [polygon.id]: http(),
-  [coreChain.id]: http(),
-  [xLayerChain.id]: http(),
-  [seiChain.id]: http(),
-  [bscTestnetChain.id]: http(),
-}
+// Configure transports
+const transports = chains.reduce((acc, chain) => {
+  acc[chain.id] = http()
+  return acc
+}, {} as Record<number, ReturnType<typeof http>>)
 
 export const wagmiConfig = createConfig({
   chains,
   connectors: [
-    injected({ target: 'metaMask' }),
+    injected(),
     walletConnect({
       projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '',
     }),

@@ -51,8 +51,20 @@ const { signer, provider, isConnected } = useEthersAdapter()
 
 ### 安装依赖
 
+支持多种包管理器：
+
 ```bash
+# pnpm (推荐)
 pnpm install
+
+# npm
+npm install
+
+# yarn
+yarn install
+
+# bun
+bun install
 ```
 
 ### 环境变量
@@ -66,7 +78,17 @@ NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id
 ### 开发模式
 
 ```bash
+# pnpm
 pnpm dev
+
+# npm
+npm run dev
+
+# yarn
+yarn dev
+
+# bun
+bun dev
 ```
 
 访问 [http://localhost:3000](http://localhost:3000)
@@ -74,8 +96,21 @@ pnpm dev
 ### 构建生产版本
 
 ```bash
+# pnpm
 pnpm build
 pnpm start
+
+# npm
+npm run build
+npm run start
+
+# yarn
+yarn build
+yarn start
+
+# bun
+bun run build
+bun run start
 ```
 
 ## 项目结构
@@ -121,12 +156,12 @@ pandatool_next/
 
 ## 开发命令
 
-```bash
-pnpm dev      # 启动开发服务器
-pnpm build    # 构建生产版本
-pnpm start    # 启动生产服务器
-pnpm lint     # 运行 ESLint
-```
+| 命令 | 描述 | pnpm | npm | yarn | bun |
+|------|------|------|-----|------|-----|
+| dev | 启动开发服务器 | `pnpm dev` | `npm run dev` | `yarn dev` | `bun dev` |
+| build | 构建生产版本 | `pnpm build` | `npm run build` | `yarn build` | `bun run build` |
+| start | 启动生产服务器 | `pnpm start` | `npm run start` | `yarn start` | `bun run start` |
+| lint | 运行 ESLint | `pnpm lint` | `npm run lint` | `yarn lint` | `bun run lint` |
 
 ## 许可证
 

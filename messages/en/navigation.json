@@ -35,6 +35,7 @@
   "menu": {
     "platform": "Platform",
     "dashboard": "Dashboard",
+    "examples": "Examples",
     "projects": "Projects",
     "analytics": "Analytics",
     "settings": "Settings",
@@ -49,6 +50,8 @@
     "addProject": "Add Project",
     "ecommercePlatform": "E-commerce Platform",
     "mobileApp": "Mobile App",
-    "marketingSite": "Marketing Site"
+    "marketingSite": "Marketing Site",
+    "uiComponents": "UI Components",
+    "ethersAdapter": "Ethers Adapter"
   }
 }

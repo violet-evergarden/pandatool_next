@@ -8,6 +8,7 @@ import {
   Map,
   PieChart,
   Briefcase,
+  Sparkles,
 } from "lucide-react"
 
 export interface Link {
@@ -93,6 +94,21 @@ export const navData: NavData = {
       url: "/dashboard",
       icon: LayoutDashboard,
       isActive: true,
+    },
+    {
+      titleKey: "examples",
+      url: "/examples",
+      icon: Sparkles,
+      items: [
+        {
+          titleKey: "uiComponents",
+          url: "/examples",
+        },
+        {
+          titleKey: "ethersAdapter",
+          url: "/examples/ethers-adapter",
+        },
+      ],
     },
     {
       titleKey: "projects",

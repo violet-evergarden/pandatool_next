@@ -2,14 +2,14 @@
 
 import { useLocale } from 'next-intl'
 import { usePathname, useRouter } from '@/i18n/routing'
-import { Globe } from 'lucide-react'
+import { Globe, Check } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 const locales = [
   { value: 'en', label: 'English', flag: '🇺🇸' },
@@ -28,23 +28,28 @@ export function LocaleSwitcher() {
   const currentLocale = locales.find((l) => l.value === locale)
 
   return (
-    <Select value={locale} onValueChange={switchLocale}>
-      <SelectTrigger className="w-30 h-8">
-        <Globe className="h-4 w-4 mr-1" />
-        <SelectValue placeholder="Language">
-          {currentLocale?.flag} {currentLocale?.label}
-        </SelectValue>
-      </SelectTrigger>
-      <SelectContent>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="sm" className="gap-2 h-8 px-2">
+          <Globe className="h-4 w-4" />
+          <span className="hidden sm:inline">{currentLocale?.flag}</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
         {locales.map((loc) => (
-          <SelectItem key={loc.value} value={loc.value}>
-            <span className="flex items-center gap-2">
-              <span>{loc.flag}</span>
-              <span>{loc.label}</span>
-            </span>
-          </SelectItem>
+          <DropdownMenuItem
+            key={loc.value}
+            onClick={() => switchLocale(loc.value)}
+            className="gap-2 cursor-pointer"
+          >
+            <span>{loc.flag}</span>
+            <span>{loc.label}</span>
+            {loc.value === locale && (
+              <Check className="h-4 w-4 ml-auto" />
+            )}
+          </DropdownMenuItem>
         ))}
-      </SelectContent>
-    </Select>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

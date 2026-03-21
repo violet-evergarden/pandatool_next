@@ -3,7 +3,7 @@
 import { useAccount, useConnect, useDisconnect, useSwitchChain } from 'wagmi'
 import { useTranslations } from 'next-intl'
 import { useSyncExternalStore } from 'react'
-import { Globe, Wallet, ChevronDown } from 'lucide-react'
+import { Wallet, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -162,7 +162,7 @@ function WalletButton() {
             {connectPending ? t('connecting') : t('connect')}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-[200px]">
+        <DropdownMenuContent align="end" className="w-50">
           <DropdownMenuLabel>{t('selectConnector')}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {connectors.map((connector) => (
@@ -202,23 +202,6 @@ function WalletButton() {
   )
 }
 
-// 语言切换按钮样式
-function LocaleButton() {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
-          <Globe className="h-4 w-4" />
-          <span className="sr-only">切换语言</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <LocaleSwitcher />
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
-}
-
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
@@ -232,7 +215,7 @@ export function SiteHeader() {
 
         {/* 右侧：操作按钮 */}
         <div className="flex items-center gap-2">
-          <LocaleButton />
+          <LocaleSwitcher />
           <Separator orientation="vertical" className="h-6 mx-1" />
           <NetworkSwitcher />
           <WalletButton />

@@ -93,7 +93,6 @@ export const navData: NavData = {
       titleKey: "dashboard",
       url: "/dashboard",
       icon: LayoutDashboard,
-      isActive: true,
     },
     {
       titleKey: "examples",

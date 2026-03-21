@@ -37,11 +37,19 @@ export function NavMain({
   const t = useTranslations('navigation.menu')
   const pathname = usePathname()
 
-  // 检查路径是否匹配（移除 locale 前缀后比较）
+  // 从 pathname 中移除 locale 前缀
+  // pathname 格式: /zh/examples/ethers-adapter
+  // url 格式: /examples 或 /examples/ethers-adapter
+  const getPathWithoutLocale = () => {
+    const localePattern = /^\/(zh|en)(\/.*)?$/
+    return pathname.replace(localePattern, '$2') || '/'
+  }
+
+  const pathWithoutLocale = getPathWithoutLocale()
+
+  // 检查路径是否匹配
   const isPathActive = (url: string) => {
-    // pathname 格式: /zh/examples/ethers-adapter
-    // url 格式: /examples 或 /examples/ethers-adapter
-    return pathname === url || pathname.startsWith(url + '/')
+    return pathWithoutLocale === url || pathWithoutLocale.startsWith(url + '/')
   }
 
   // 检查菜单项是否 active（包括子菜单）

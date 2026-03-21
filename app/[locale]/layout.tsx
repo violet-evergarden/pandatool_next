@@ -9,6 +9,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
+import { Toaster } from "@/components/ui/sonner";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -63,6 +64,7 @@ export default async function RootLayout({
                   <div className="flex flex-1 flex-col p-4">
                     {children}
                   </div>
+                  <Toaster />
                 </SidebarInset>
               </SidebarProvider>
             </TooltipProvider>

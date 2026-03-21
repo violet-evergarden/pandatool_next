@@ -193,7 +193,7 @@ function ReadBalance() {
             id="address"
             value={targetAddress}
             onChange={(e) => setTargetAddress(e.target.value)}
-            placeholder={address || '输入以太坊地址'}
+            placeholder="输入以太坊地址 (留空查询当前账户)"
           />
         </div>
         <Button onClick={handleGetBalance} disabled={!provider || isLoading}>

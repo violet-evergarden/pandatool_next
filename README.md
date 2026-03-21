@@ -1,36 +1,133 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PandaTool Next
 
-## Getting Started
+一个基于 Next.js 16 的 Web3 工具集项目，支持多语言和钱包连接。
 
-First, run the development server:
+## 技术栈
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **框架**: Next.js 16.2.0 (App Router)
+- **React**: 19.2.4
+- **样式**: Tailwind CSS v4
+- **国际化**: next-intl
+- **Web3**: wagmi + viem + ethers.js
+- **UI 组件**: shadcn/ui + Radix UI
+- **图标**: Lucide React
+
+## 功能特性
+
+### 🌐 国际化支持
+- 支持中文 (zh) 和英文 (en)
+- 基于 URL 的语言切换 (`/zh/...`, `/en/...`)
+- 完整的导航和菜单翻译
+
+### 🔗 Web3 集成
+- 钱包连接
+- 多链支持 (Ethereum, Polygon, Arbitrum, Optimism, Base)
+- 网络切换
+
+### 🔧 Ethers.js Adapters
+提供 viem 到 ethers.js 的转换 hooks，方便与只支持 ethers.js 的 SDK 集成：
+
+```tsx
+import { useEthersSigner, useEthersProvider, useEthersAdapter } from '@/hooks/use-ethers-adapter'
+
+// 获取 ethers Signer
+const signer = useEthersSigner()
+
+// 获取 ethers Provider
+const provider = useEthersProvider({ chainId: 1 })
+
+// 组合使用
+const { signer, provider, isConnected } = useEthersAdapter()
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 🎨 UI 组件
+- 响应式侧边栏导航
+- 团队切换器
+- 语言切换器
+- Toast 通知 (Sonner)
+- 完整的 shadcn/ui 组件库
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 快速开始
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 安装依赖
 
-## Learn More
+```bash
+pnpm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 环境变量
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+创建 `.env.local` 文件：
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```env
+NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id
+```
 
-## Deploy on Vercel
+### 开发模式
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+pnpm dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+访问 [http://localhost:3000](http://localhost:3000)
+
+### 构建生产版本
+
+```bash
+pnpm build
+pnpm start
+```
+
+## 项目结构
+
+```
+pandatool_next/
+├── app/
+│   └── [locale]/           # 国际化路由
+│       ├── layout.tsx      # 根布局
+│       ├── page.tsx        # 首页
+│       └── examples/       # 示例页面
+│           ├── page.tsx    # UI 组件示例
+│           └── ethers-adapter/  # Ethers.js Adapter 示例
+├── components/
+│   ├── ui/                 # shadcn/ui 组件
+│   ├── app-sidebar.tsx     # 应用侧边栏
+│   ├── nav-main.tsx        # 主导航
+│   ├── nav-projects.tsx    # 项目导航
+│   ├── nav-user.tsx        # 用户导航
+│   ├── team-switcher.tsx   # 团队切换
+│   ├── locale-switcher.tsx # 语言切换
+│   └── site-header.tsx     # 站点头部
+├── hooks/
+│   ├── use-mobile.ts       # 移动端检测
+│   └── use-ethers-adapter.ts  # Ethers.js 适配器
+├── lib/
+│   ├── nav-data.ts         # 导航数据
+│   ├── wagmi-config.ts     # Wagmi 配置
+│   └── utils.ts            # 工具函数
+├── messages/
+│   ├── zh/                 # 中文翻译
+│   └── en/                 # 英文翻译
+└── i18n/
+    └── routing.ts          # 国际化路由配置
+```
+
+## 示例页面
+
+| 路径 | 描述 |
+|------|------|
+| `/zh/examples` | UI 组件示例 (Button, Toast, Dialog 等) |
+| `/zh/examples/ethers-adapter` | Ethers.js Adapter 使用示例 |
+
+## 开发命令
+
+```bash
+pnpm dev      # 启动开发服务器
+pnpm build    # 构建生产版本
+pnpm start    # 启动生产服务器
+pnpm lint     # 运行 ESLint
+```
+
+## 许可证
+
+MIT

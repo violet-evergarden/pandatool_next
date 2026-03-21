@@ -11,7 +11,7 @@ export function AppLogo() {
     <SidebarMenu>
       <SidebarMenuItem>
         <SidebarMenuButton size="lg" className="pointer-events-none">
-          <Image src={"/favicon.ico"} width={30} height={30} alt="Panda Tool" />
+          <Image src={"/favicon.ico"} width={25} height={25} alt="Panda Tool" />
           <span className="truncate text-lg font-bold ml-2">Panda Tool</span>
         </SidebarMenuButton>
       </SidebarMenuItem>

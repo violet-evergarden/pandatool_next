@@ -1,29 +1,20 @@
-"use client"
-
-import { Hexagon } from "lucide-react"
+"use client";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import Image from "next/image";
 
 export function AppLogo() {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <SidebarMenuButton
-          size="lg"
-          className="pointer-events-none"
-        >
-          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Hexagon className="size-4" />
-          </div>
-          <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate text-lg font-bold">Panda Tool</span>
-            <span className="truncate text-xs text-muted-foreground">Web3 Toolkit</span>
-          </div>
+        <SidebarMenuButton size="lg" className="pointer-events-none">
+          <Image src={"/favicon.ico"} width={30} height={30} alt="Panda Tool" />
+          <span className="truncate text-lg font-bold ml-2">Panda Tool</span>
         </SidebarMenuButton>
       </SidebarMenuItem>
     </SidebarMenu>
-  )
+  );
 }

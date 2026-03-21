@@ -6,8 +6,8 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { AppLogo } from "@/components/team-switcher"
 import { NavMain } from "@/components/nav-main"
-import { TeamSwitcher } from "@/components/team-switcher"
 import { navData } from "@/lib/nav-data"
 
 export function AppSidebar({
@@ -16,10 +16,7 @@ export function AppSidebar({
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher
-          teams={navData.teams}
-          defaultTeam={navData.teams[0]}
-        />
+        <AppLogo />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navData.navMain} />

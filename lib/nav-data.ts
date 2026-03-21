@@ -4,9 +4,6 @@ import {
   FolderKanban,
   BarChart3,
   Settings,
-  Frame,
-  Map,
-  Briefcase,
   Sparkles,
 } from "lucide-react"
 
@@ -31,35 +28,11 @@ export interface NavMain {
   items?: NavItem[]
 }
 
-export interface Team {
-  nameKey: string
-  logo: LucideIcon
-  planKey: string
-}
-
 export interface NavData {
-  teams: Team[]
   navMain: NavMain[]
 }
 
 export const navData: NavData = {
-  teams: [
-    {
-      nameKey: "acmeInc",
-      logo: Frame,
-      planKey: "enterprise",
-    },
-    {
-      nameKey: "monstersInc",
-      logo: Briefcase,
-      planKey: "startup",
-    },
-    {
-      nameKey: "starkIndustries",
-      logo: Map,
-      planKey: "pro",
-    },
-  ],
   navMain: [
     {
       titleKey: "dashboard",

@@ -6,7 +6,7 @@ async function loadMessages(locale: string) {
   const messages: Record<string, unknown> = {};
 
   // 定义要加载的模块
-  const modules = ['common', 'home', 'navigation', 'wallet', 'network', 'user', 'errors', 'metadata'];
+  const modules = ['common', 'home', 'navigation', 'wallet', 'network', 'user', 'errors', 'metadata', 'token-logo'];
 
   // 并行加载所有模块
   const loadedModules = await Promise.all(

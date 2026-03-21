@@ -53,6 +53,8 @@
     "marketingSite": "营销网站",
     "uiComponents": "UI 组件",
     "ethersAdapter": "Ethers Adapter",
-    "ethers-adapter": "Ethers Adapter"
+    "ethers-adapter": "Ethers Adapter",
+    "tool": "工具",
+    "logo": "Logo 提交"
   }
 }

@@ -6,16 +6,14 @@ import {
   Settings,
   Frame,
   Map,
-  PieChart,
   Briefcase,
   Sparkles,
 } from "lucide-react"
 
 export interface Link {
-  titleKey: string  // 翻译键
+  titleKey: string
   url?: string
   icon?: LucideIcon
-  isActive?: boolean
   items?: Link[]
 }
 
@@ -23,7 +21,6 @@ export interface NavItem extends Link {
   titleKey: string
   url: string
   icon?: LucideIcon
-  isActive?: boolean
   items?: Link[]
 }
 
@@ -31,14 +28,7 @@ export interface NavMain {
   titleKey: string
   url: string
   icon?: LucideIcon
-  isActive?: boolean
   items?: NavItem[]
-}
-
-export interface NavProject {
-  nameKey: string
-  url: string
-  icon?: LucideIcon
 }
 
 export interface Team {
@@ -47,30 +37,12 @@ export interface Team {
   planKey: string
 }
 
-export interface User {
-  name: string
-  email: string
-  avatar: string
-}
-
-export interface NavLink {
-  titleKey: string
-  href: string
-}
-
 export interface NavData {
-  user: User
   teams: Team[]
   navMain: NavMain[]
-  projects: NavProject[]
 }
 
 export const navData: NavData = {
-  user: {
-    name: "Jane Doe",
-    email: "jane@example.com",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jane",
-  },
   teams: [
     {
       nameKey: "acmeInc",
@@ -161,23 +133,6 @@ export const navData: NavData = {
           url: "/settings/billing",
         },
       ],
-    },
-  ],
-  projects: [
-    {
-      nameKey: "ecommercePlatform",
-      url: "/projects/ecommerce",
-      icon: PieChart,
-    },
-    {
-      nameKey: "mobileApp",
-      url: "/projects/mobile",
-      icon: FolderKanban,
-    },
-    {
-      nameKey: "marketingSite",
-      url: "/projects/marketing",
-      icon: Map,
     },
   ],
 }

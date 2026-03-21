@@ -128,8 +128,6 @@ pandatool_next/
 │   ├── ui/                 # shadcn/ui 组件
 │   ├── app-sidebar.tsx     # 应用侧边栏
 │   ├── nav-main.tsx        # 主导航
-│   ├── nav-projects.tsx    # 项目导航
-│   ├── nav-user.tsx        # 用户导航
 │   ├── team-switcher.tsx   # 团队切换
 │   ├── locale-switcher.tsx # 语言切换
 │   └── site-header.tsx     # 站点头部

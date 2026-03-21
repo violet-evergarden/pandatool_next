@@ -102,6 +102,9 @@ function NetworkSwitcher() {
     return chainId ? colors[chainId] || 'bg-gray-500' : 'bg-gray-400'
   }
 
+  // 服务端渲染时使用默认颜色，避免水合错误
+  const chainColor = isClient ? getChainColor(chain?.id) : 'bg-gray-400'
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -111,7 +114,7 @@ function NetworkSwitcher() {
           disabled={isPending}
           className="gap-2 min-w-[120px] justify-start"
         >
-          <span className={`w-2 h-2 rounded-full ${getChainColor(chain?.id)}`} />
+          <span className={`w-2 h-2 rounded-full ${chainColor}`} />
           <span className="truncate">{displayText}</span>
           <ChevronDown className="h-4 w-4 ml-auto opacity-50" />
         </Button>

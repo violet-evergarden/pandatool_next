@@ -52,6 +52,7 @@
     "mobileApp": "移动应用",
     "marketingSite": "营销网站",
     "uiComponents": "UI 组件",
-    "ethersAdapter": "Ethers Adapter"
+    "ethersAdapter": "Ethers Adapter",
+    "ethers-adapter": "Ethers Adapter"
   }
 }

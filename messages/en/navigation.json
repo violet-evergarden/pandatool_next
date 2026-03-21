@@ -52,6 +52,7 @@
     "mobileApp": "Mobile App",
     "marketingSite": "Marketing Site",
     "uiComponents": "UI Components",
-    "ethersAdapter": "Ethers Adapter"
+    "ethersAdapter": "Ethers Adapter",
+    "ethers-adapter": "Ethers Adapter"
   }
 }

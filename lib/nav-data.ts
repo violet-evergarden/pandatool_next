@@ -59,6 +59,10 @@ export const navData: NavData = {
           titleKey: "snapshotToken",
           url: "/tool/snapshot-token",
         },
+        {
+          titleKey: "contractCheck",
+          url: "/tool/contract-check",
+        },
       ],
     },
   ],

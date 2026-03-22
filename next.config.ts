@@ -5,6 +5,7 @@ const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const nextConfig: NextConfig = {
   /* config options here */
+  serverExternalPackages: ['jspdf', 'html2canvas'],
 };
 
 export default withNextIntl(nextConfig);

@@ -56,6 +56,7 @@
     "ethers-adapter": "Ethers Adapter",
     "tool": "工具",
     "logo": "Logo 提交",
-    "snapshotToken": "代币快照"
+    "snapshotToken": "代币快照",
+    "contractCheck": "合约检测"
   }
 }

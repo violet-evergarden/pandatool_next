@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useCallback } from 'react'
-import { useTranslations } from 'next-intl'
+import { useState, useCallback, useMemo } from 'react'
+import { useTranslations, useLocale } from 'next-intl'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -14,15 +14,9 @@ import {
 } from '@/components/ui/select'
 import { toast } from 'sonner'
 import { Search, Download, ExternalLink } from 'lucide-react'
-
-// 链选项配置
-const CHAIN_OPTIONS = [
-  { label: 'BSC', value: 'bsc', chainId: 56 },
-  { label: 'Ethereum', value: 'eth', chainId: 1 },
-  { label: 'Base', value: 'base', chainId: 8453 },
-  { label: 'Polygon', value: 'polygon', chainId: 137 },
-  { label: 'Arbitrum', value: 'arbitrum', chainId: 42161 },
-]
+import { getChainOptions } from '@/lib/constants/chains'
+import { isValidEvmAddress, normalizeAddress } from '@/lib/utils/address'
+import { downloadTextFile, buildCsvContent, generateTimestampFilename } from '@/lib/utils/file-download'
 
 // 快速选项
 const QUICK_OPTIONS = [
@@ -34,9 +28,6 @@ const QUICK_OPTIONS = [
   { label: 'TOP10,000', value: 10000 },
 ]
 
-// Moralis API Key
-const MORALIS_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6IjE3OGJiYjZlLTcyYTEtNDc0OC04MTllLWRiMWY5OTUxOTNmOSIsIm9yZ0lkIjoiNDY3MTA2IiwidXNlcklkIjoiNDgwNTQzIiwidHlwZUlkIjoiZjMxMWU5MzAtNTY0Mi00OGU1LTllMjctNjhhMmMzY2NmMGUwIiwidHlwzSI6IlBST0pFQ1QiLCJpYXQiOiJ3NTY0'
-
 interface TokenStats {
   name: string
   symbol: string
@@ -45,7 +36,8 @@ interface TokenStats {
 
 export default function SnapshotTokenPage() {
   const t = useTranslations('snapshot-token')
-  const locale = typeof window !== 'undefined' ? 'en' : 'zh'
+  const locale = useLocale()
+  const chainOptions = useMemo(() => getChainOptions(), [])
 
   const [selectedChain, setSelectedChain] = useState('bsc')
   const [tokenAddress, setTokenAddress] = useState('')
@@ -60,7 +52,7 @@ export default function SnapshotTokenPage() {
   const [minHolding, setMinHolding] = useState<number | undefined>(undefined)
   const [exportFormat, setExportFormat] = useState<'csv' | 'txt'>('txt')
 
-  // 吜索 Token
+  // 搜索 Token
   const handleSearch = useCallback(async () => {
     if (!tokenAddress.trim()) {
       toast.error(t('errors.invalidAddress'))
@@ -69,49 +61,36 @@ export default function SnapshotTokenPage() {
 
     // 验证地址格式
     const address = tokenAddress.trim()
-    if (!/^(0x)?[0-9a-fA-F]{40}$/i.test(address)) {
+    if (!isValidEvmAddress(address)) {
       toast.error(t('errors.invalidAddress'))
       return
     }
 
+    const normalizedAddress = normalizeAddress(address)
     setLoading(true)
 
     try {
-      // 获取持有者数量
-      const holdersResponse = await fetch(
-        `https://deep-index.moralis.io/api/v2.2/erc20/${tokenAddress.trim()}/holders?chain=${selectedChain}`,
-        {
-          method: 'GET',
-          headers: {
-            accept: 'application/json',
-            'X-API-Key': MORALIS_API_KEY,
-          },
-        }
+      // 通过 API Route 获取持有者数量
+      const holdersRes = await fetch(
+        `/api/moralis?endpoint=holders&chain=${selectedChain}&address=${normalizedAddress}`
       )
 
-      if (!holdersResponse.ok) {
+      if (!holdersRes.ok) {
         throw new Error('Failed to fetch holders')
       }
 
-      const holdersData = await holdersResponse.json()
+      const holdersData = await holdersRes.json()
 
-      // 获取 Token 元数据
-      const metadataResponse = await fetch(
-        `https://deep-index.moralis.io/api/v2.2/erc20/metadata?addresses=${tokenAddress.trim()}&chain=${selectedChain}`,
-        {
-          method: 'GET',
-          headers: {
-            accept: 'application/json',
-            'X-API-Key': MORALIS_API_KEY,
-          },
-        }
+      // 通过 API Route 获取 Token 元数据
+      const metadataRes = await fetch(
+        `/api/moralis?endpoint=metadata&chain=${selectedChain}&address=${normalizedAddress}`
       )
 
       let name = 'Unknown'
       let symbol = 'UNKNOWN'
 
-      if (metadataResponse.ok) {
-        const metadata = await metadataResponse.json()
+      if (metadataRes.ok) {
+        const metadata = await metadataRes.json()
         if (metadata && metadata[0]) {
           name = metadata[0].name || 'Unknown'
           symbol = metadata[0].symbol || 'UNKNOWN'
@@ -122,7 +101,7 @@ export default function SnapshotTokenPage() {
 
       setTokenStats({ name, symbol, holders })
       setShowConfig(true)
-      toast.success(`Found: ${name} (${symbol}) - ${holders} holders`)
+      toast.success(`${t('found')}: ${name} (${symbol}) - ${holders} ${t('tokenHolders')}`)
     } catch (error) {
       console.error('Search error:', error)
       toast.error(t('errors.networkError'))
@@ -143,22 +122,18 @@ export default function SnapshotTokenPage() {
 
     try {
       const exportData: Array<{ address: string; amount: string }> = []
-      const baseUrl = `https://deep-index.moralis.io/api/v2.2/erc20/${tokenAddress.trim()}/owners?chain=${selectedChain}&order=DESC`
       let cursor = ''
       let remaining = topCount
 
       // 分页获取数据
       while (remaining > 0) {
         const pageSize = Math.min(100, remaining)
-        const pageUrl = `${baseUrl}&page_size=${pageSize}${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`
+        let url = `/api/moralis?endpoint=owners&chain=${selectedChain}&address=${normalizeAddress(tokenAddress)}&pageSize=${pageSize}`
+        if (cursor) {
+          url += `&cursor=${encodeURIComponent(cursor)}`
+        }
 
-        const response = await fetch(pageUrl, {
-          method: 'GET',
-          headers: {
-            accept: 'application/json',
-            'X-API-Key': MORALIS_API_KEY,
-          },
-        })
+        const response = await fetch(url)
 
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}`)
@@ -183,18 +158,25 @@ export default function SnapshotTokenPage() {
       }
 
       // 生成文件
-      const timestamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-')
-      const fileNameBase = `${tokenStats?.symbol || 'token'}_holders_${selectedChain}_${timestamp}`
+      const fileNameBase = generateTimestampFilename(
+        `${tokenStats?.symbol || 'token'}_holders_${selectedChain}`,
+        exportFormat
+      ).replace(`.${exportFormat}`, '')
 
       if (exportFormat === 'csv') {
-        const csv = buildCsv(exportData)
-        downloadFile(csv, `${fileNameBase}.csv`, 'text/csv;charset=utf-8;')
+        const csv = buildCsvContent(
+          ['address', 'amount'],
+          exportData.map((row) => ({ address: row.address || '', amount: row.amount || '' }))
+        )
+        downloadTextFile(csv, `${fileNameBase}.csv`, 'text/csv;charset=utf-8;')
       } else {
-        const txt = buildTxt(exportData)
-        downloadFile(txt, `${fileNameBase}.txt`, 'text/plain;charset=utf-8;')
+        const txt = exportData
+          .map((row) => `${row.address || ''},${row.amount != null ? row.amount : ''}`)
+          .join('\n')
+        downloadTextFile(txt, `${fileNameBase}.txt`, 'text/plain;charset=utf-8;')
       }
 
-      toast.success(`Exported ${exportData.length} holders`)
+      toast.success(`${t('exported')} ${exportData.length} ${t('tokenHolders')}`)
     } catch (error) {
       console.error('Snapshot error:', error)
       toast.error(t('errors.networkError'))
@@ -202,43 +184,6 @@ export default function SnapshotTokenPage() {
       setExporting(false)
     }
   }, [selectedChain, tokenAddress, quickCustom, exportFormat, tokenStats, t])
-
-  // 构建 CSV 内容
-  function buildCsv(rows: Array<{ address: string; amount: string }>): string {
-    const header = ['address', 'amount']
-    const lines = [header.join(',')]
-
-    for (const row of rows) {
-      const safe = (val: string) => {
-        const s = String(val).replace(/"/g, '""')
-        return /[",\n]/.test(s) ? `"${s}"` : s
-      }
-      lines.push([safe(row.address || ''), safe(row.amount || '')].join(','))
-    }
-
-    // 加 UTF-8 BOM，防止 Excel 中文乱码
-    return '\uFEFF' + lines.join('\n')
-  }
-
-  // 构建 TXT 内容
-  function buildTxt(rows: Array<{ address: string; amount: string }>): string {
-    return rows
-      .map((row) => `${row.address || ''},${row.amount != null ? row.amount : ''}`)
-      .join('\n')
-  }
-
-  // 下载文件
-  function downloadFile(content: string, filename: string, mime: string): void {
-    const blob = new Blob([content], { type: mime })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = filename
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
-  }
 
   // 帮助链接
   const helpLink = locale === 'zh' ? t('helpLinkZh') : t('helpLinkEn')
@@ -268,7 +213,7 @@ export default function SnapshotTokenPage() {
                 <SelectValue placeholder={t('selectPlaceholder')} />
               </SelectTrigger>
               <SelectContent>
-                {CHAIN_OPTIONS.map((chain) => (
+                {chainOptions.map((chain) => (
                   <SelectItem key={chain.value} value={chain.value}>
                     {chain.label}
                   </SelectItem>
@@ -283,7 +228,7 @@ export default function SnapshotTokenPage() {
             />
             <Button onClick={handleSearch} disabled={loading} className="w-full sm:w-[130px]">
               <Search className="w-4 h-4 mr-2" />
-              {loading ? '...' : t('search')}
+              {loading ? t('searching') : t('search')}
             </Button>
           </div>
 
@@ -331,7 +276,7 @@ export default function SnapshotTokenPage() {
                         setQuickCustom(opt.value)
                       }}
                     >
-                      {opt.label}
+                      {t(`top${opt.value}` as never)}
                     </Button>
                   ))}
                   <Input
@@ -385,7 +330,7 @@ export default function SnapshotTokenPage() {
                 disabled={exporting}
               >
                 <Download className="w-5 h-5 mr-2" />
-                {exporting ? 'Processing...' : t('snapshotNow')}
+                {exporting ? t('processing') : t('snapshotNow')}
               </Button>
             </>
           )}

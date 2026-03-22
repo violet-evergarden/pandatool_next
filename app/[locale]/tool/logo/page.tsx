@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useTranslations } from 'next-intl'
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, useReadContract } from 'wagmi'
 import { formatUnits } from 'viem'
@@ -18,6 +18,7 @@ import {
 import { LogoUploader } from './_components/logo-uploader'
 import { toast } from 'sonner'
 import { Copy, CheckCircle, AlertTriangle, ExternalLink, MessageCircle } from 'lucide-react'
+import { USDT_CONFIG, EXPLORER_URL, RECEIVER_ADDRESS, TESTNET_WHITELIST } from '@/lib/constants/chains'
 
 // 平台选项配置
 const PLATFORM_OPTIONS = [
@@ -50,26 +51,6 @@ const MAINNET_OPTIONS = [
   { label: 'HECO', value: 'HECO' },
 ]
 
-// USDT 合约配置
-const USDT_CONFIG: Record<number, { address: `0x${string}`; decimals: number; symbol: string }> = {
-  56: {
-    address: '0x55d398326f99059fF775485246999027B3197955',
-    decimals: 18,
-    symbol: 'USDT',
-  },
-  97: {
-    address: '0x66E972502A34A625828C544a1914E8D8cc2A9dE5',
-    decimals: 18,
-    symbol: 'USDT',
-  },
-}
-
-// 区块链浏览器 URL
-const EXPLORER_URL: Record<number, string> = {
-  56: 'https://bscscan.com/tx/',
-  97: 'https://testnet.bscscan.com/tx/',
-}
-
 // ERC20 ABI (只需要 transfer 和 balanceOf)
 const ERC20_ABI = [
   {
@@ -90,17 +71,6 @@ const ERC20_ABI = [
     type: 'function',
   },
 ] as const
-
-// 接收地址
-const RECEIVER_ADDRESS = '0x6C5Cb68cb68Ef116DD37b429F4d3cA5569B79E6b' as `0x${string}`
-
-// 测试网白名单地址
-const TESTNET_WHITELIST = '0x8dE09E570fA88531a498525d9f8116a5797A8A4f'
-
-// API 端点
-const API_UPLOAD = 'https://notifybot.pandatool.org/upload_logo_meta'
-const API_NOTIFY = 'https://notifybot.pandatool.org/sendBot'
-const API_KEY = '9192fd41-ac91-438d-8cde-ec7408015c7d'
 
 interface FormData {
   channelPlatform: string
@@ -166,7 +136,10 @@ export default function TokenLogoPage() {
   })
 
   // 获取选中平台的价格
-  const selectedPlatform = PLATFORM_OPTIONS.find((p) => p.value === formData.channelPlatform)
+  const selectedPlatform = useMemo(
+    () => PLATFORM_OPTIONS.find((p) => p.value === formData.channelPlatform),
+    [formData.channelPlatform]
+  )
   const price = selectedPlatform?.price ?? 0
 
   // 处理表单字段变化
@@ -175,20 +148,20 @@ export default function TokenLogoPage() {
   }, [])
 
   // 联系客服
-  const contactService = () => {
+  const contactService = useCallback(() => {
     window.open('https://t.me/btc6560', '_blank')
-  }
+  }, [])
 
   // 复制元数据 URL
-  const copyMetaUrl = () => {
+  const copyMetaUrl = useCallback(() => {
     if (metaDataUrl) {
       navigator.clipboard.writeText(metaDataUrl)
       toast.success(t('copySuccess'))
     }
-  }
+  }, [metaDataUrl, t])
 
   // 提交表单
-  const handleSubmit = async () => {
+  const handleSubmit = useCallback(async () => {
     // 表单验证
     if (!formData.channelPlatform) {
       toast.error(t('errors.selectPlatform'))
@@ -259,11 +232,13 @@ export default function TokenLogoPage() {
       toast.error(t('errors.submitFailed'))
       setSubmitting(false)
     }
-  }
+  }, [formData, address, chainId, price, usdtBalanceRaw, writeContract, t])
 
   // 交易确认后上传数据
   useEffect(() => {
     if (!isConfirmed || !txHash || !address || !chainId) return
+
+    let isMounted = true
 
     const uploadData = async () => {
       try {
@@ -284,15 +259,15 @@ export default function TokenLogoPage() {
         postData.append('payNeworkId', chainId.toString())
         postData.append('payTx', txHash)
 
-        const response = await fetch(API_UPLOAD, {
+        // 使用 API Route 代理请求
+        const response = await fetch('/api/logo/upload', {
           method: 'POST',
-          headers: {
-            'X-API-Key': API_KEY,
-          },
           body: postData,
         })
 
         const result = await response.json()
+
+        if (!isMounted) return
 
         if (result.code === 200) {
           setMetaDataUrl(result.metaURI)
@@ -304,11 +279,11 @@ export default function TokenLogoPage() {
 <b>平台:</b>\n<code>${formData.channelPlatform}</code>\n
 <b>付款哈希:</b>\n${EXPLORER_URL[chainId] + txHash} \n
 <b>资料：</b>\n${result.metaURI} \n`
-          fetch(API_NOTIFY, {
+
+          fetch('/api/logo/notify', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'X-API-Key': API_KEY,
             },
             body: JSON.stringify({ message }),
           }).catch(() => {})
@@ -316,14 +291,21 @@ export default function TokenLogoPage() {
           toast.error(t('errors.submitFailed'))
         }
       } catch (error) {
+        if (!isMounted) return
         console.error('Upload error:', error)
         toast.error(t('errors.submitFailed'))
       } finally {
-        setSubmitting(false)
+        if (isMounted) {
+          setSubmitting(false)
+        }
       }
     }
 
     uploadData()
+
+    return () => {
+      isMounted = false
+    }
   }, [isConfirmed, txHash, address, chainId, formData, t])
 
   return (
@@ -512,7 +494,7 @@ export default function TokenLogoPage() {
                 disabled={submitting || isWritePending || isConfirming}
               >
                 {submitting || isWritePending || isConfirming
-                  ? 'Processing...'
+                  ? t('processing')
                   : t('payAndSubmit')}
               </Button>
             </div>

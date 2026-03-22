@@ -55,6 +55,7 @@
     "ethersAdapter": "Ethers Adapter",
     "ethers-adapter": "Ethers Adapter",
     "tool": "Tools",
-    "logo": "Logo Submission"
+    "logo": "Logo Submission",
+    "snapshotToken": "Token Snapshot"
   }
 }

@@ -5,6 +5,7 @@ import {
   BarChart3,
   Settings,
   Sparkles,
+  Wrench,
 } from "lucide-react"
 
 export interface Link {
@@ -104,6 +105,21 @@ export const navData: NavData = {
         {
           titleKey: "billing",
           url: "/settings/billing",
+        },
+      ],
+    },
+    {
+      titleKey: "tool",
+      url: "/tool",
+      icon: Wrench,
+      items: [
+        {
+          titleKey: "logo",
+          url: "/tool/logo",
+        },
+        {
+          titleKey: "snapshotToken",
+          url: "/tool/snapshot-token",
         },
       ],
     },

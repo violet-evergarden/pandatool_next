@@ -1,0 +1,32 @@
+{
+  "title": "代币持有者快照",
+  "tutorial": "使用教程",
+  "helpLinkEn": "https://help.pandatool.org/english/tools/snapshottoken",
+  "helpLinkZh": "https://help.pandatool.org/tools/snapshottoken",
+  "selectPlaceholder": "选择链",
+  "searchPlaceholder": "输入代币合约地址",
+  "search": "搜索",
+  "tokenName": "代币名称",
+  "tokenSymbol": "代币符号",
+  "holders": "持有者数量",
+  "quickFilter": "快速筛选",
+  "maxHint": "（最多 10,000）",
+  "customMinHolding": "最小持有量（可选）",
+  "exportFormat": "导出格式",
+  "csv": "CSV",
+  "txt": "TXT",
+  "snapshotNow": "立即快照",
+  "top100": "TOP100",
+  "top500": "TOP500",
+  "top1000": "TOP1,000",
+  "top2000": "TOP2,000",
+  "top5000": "TOP5,000",
+  "top10000": "TOP10,000",
+  "errors": {
+    "invalidAddress": "无效的合约地址",
+    "illegalToken": "不是有效的 ERC20 代币",
+    "networkError": "网络错误，请重试",
+    "invalidTop": "请输入有效数量（1-10000）",
+    "exportFailed": "导出失败，请重试"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "title": "Token Holder Snapshot",
+  "tutorial": "Tutorial",
+  "helpLinkEn": "https://help.pandatool.org/english/tools/snapshottoken",
+  "helpLinkZh": "https://help.pandatool.org/tools/snapshottoken",
+  "selectPlaceholder": "Select Chain",
+  "searchPlaceholder": "Enter token contract address",
+  "search": "Search",
+  "tokenName": "Token Name",
+  "tokenSymbol": "Token Symbol",
+  "holders": "Holders",
+  "quickFilter": "Quick Filter",
+  "maxHint": " (Max 10,000)",
+  "customMinHolding": "Minimum Holding (optional)",
+  "exportFormat": "Export Format",
+  "csv": "CSV",
+  "txt": "TXT",
+  "snapshotNow": "Snapshot Now",
+  "top100": "TOP100",
+  "top500": "TOP500",
+  "top1000": "TOP1,000",
+  "top2000": "TOP2,000",
+  "top5000": "TOP5,000",
+  "top10000": "TOP10,000",
+  "errors": {
+    "invalidAddress": "Invalid contract address",
+    "illegalToken": "Not a valid ERC20 token",
+    "networkError": "Network error, please try again",
+    "invalidTop": "Please enter a valid number (1-10000)",
+    "exportFailed": "Export failed, please try again"
+  }
+}

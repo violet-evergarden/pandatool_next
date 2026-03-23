@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { formatEther } from 'ethers'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -18,17 +18,14 @@ import {
   useEthersProvider,
   useEthersAdapter,
 } from '@/hooks/use-ethers-adapter'
+import { useMounted } from '@/hooks/use-mounted'
 import { useAccount } from 'wagmi'
 
 // 示例 1: 基础信息展示
 function AccountInfo() {
   const { isConnected, address, chain } = useAccount()
   const { signer, provider } = useEthersAdapter()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  const mounted = useMounted()
 
   // 服务端渲染时显示加载状态，避免水合错误
   if (!mounted) {

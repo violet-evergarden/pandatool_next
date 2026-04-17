@@ -57,6 +57,7 @@
     "tool": "Tools",
     "logo": "Logo Submission",
     "snapshotToken": "Token Snapshot",
-    "contractCheck": "Contract Check"
+    "contractCheck": "Contract Check",
+    "check": "Contract Check"
   }
 }

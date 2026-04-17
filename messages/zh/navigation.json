@@ -57,6 +57,7 @@
     "tool": "工具",
     "logo": "Logo 提交",
     "snapshotToken": "代币快照",
-    "contractCheck": "合约检测"
+    "contractCheck": "合约检测",
+    "check": "合约检测"
   }
 }
